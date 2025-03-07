@@ -6,35 +6,86 @@ import streamlit as st
 from datetime import datetime
 from io import StringIO
 
-# Add the current directory to the system path to ensure wiki.py can be found
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Ensure the script finds wiki.py in the same repo
+repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
+sys.path.append(repo_path)  # Add it to Python's search path
 
-# Import wiki_gendersort from wiki.py
+# Import wiki.py dynamically
 try:
     from wiki import wiki_gendersort
-    gender_sorter = wiki_gendersort()
-except ModuleNotFoundError as e:
-    st.error(f"ModuleNotFoundError: {e}. Make sure `wiki.py` is in the same directory as this script.")
-except Exception as e:
-    st.error(f"An error occurred while importing wiki.py: {e}")
+    gender_sorter = wiki_gendersort()  # Initialize the gender sorter
+except ModuleNotFoundError:
+    st.error("Error: Could not find `wiki.py`. Make sure it exists in your repo and is at the root level.")
 
 # Streamlit UI
-st.title("LinkedIn Profile Search (Google CSE)")
+st.title("🔎 LinkedIn Profile Search (Google CSE)")
 
 # User Inputs
-API_KEY = st.text_input("Enter Google CSE API Key", type="password")
 CSE_ID = st.text_input("Enter Custom Search Engine ID (CSE ID)")
+
 query = st.text_input("Enter Search Query")
 num_results = st.number_input("Number of Results to Fetch", min_value=1, max_value=200, value=50)
 gender = st.radio("Filter by Gender:", ["Male", "Female", "Both"])
 
-# Define LinkedIn country subdomains
+# Define LinkedIn country subdomains (Full List)
 country_options = {
     "United States": "www.linkedin.com/in",
     "United Kingdom": "uk.linkedin.com/in",
     "Netherlands": "nl.linkedin.com/in",
     "South Africa": "za.linkedin.com/in",
     "Canada": "ca.linkedin.com/in",
+    "Australia": "au.linkedin.com/in",
+    "Germany": "de.linkedin.com/in",
+    "France": "fr.linkedin.com/in",
+    "India": "in.linkedin.com/in",
+    "Brazil": "br.linkedin.com/in",
+    "Italy": "it.linkedin.com/in",
+    "Spain": "es.linkedin.com/in",
+    "China": "cn.linkedin.com/in",
+    "Japan": "jp.linkedin.com/in",
+    "Mexico": "mx.linkedin.com/in",
+    "Argentina": "ar.linkedin.com/in",
+    "Belgium": "be.linkedin.com/in",
+    "Sweden": "se.linkedin.com/in",
+    "Switzerland": "ch.linkedin.com/in",
+    "Russia": "ru.linkedin.com/in",
+    "Singapore": "sg.linkedin.com/in",
+    "Ireland": "ie.linkedin.com/in",
+    "New Zealand": "nz.linkedin.com/in",
+    "United Arab Emirates": "ae.linkedin.com/in",
+    "Saudi Arabia": "sa.linkedin.com/in",
+    "Norway": "no.linkedin.com/in",
+    "Denmark": "dk.linkedin.com/in",
+    "Finland": "fi.linkedin.com/in",
+    "Poland": "pl.linkedin.com/in",
+    "Turkey": "tr.linkedin.com/in",
+    "Malaysia": "my.linkedin.com/in",
+    "Indonesia": "id.linkedin.com/in",
+    "Philippines": "ph.linkedin.com/in",
+    "Thailand": "th.linkedin.com/in",
+    "South Korea": "kr.linkedin.com/in",
+    "Vietnam": "vn.linkedin.com/in",
+    "Israel": "il.linkedin.com/in",
+    "Portugal": "pt.linkedin.com/in",
+    "Greece": "gr.linkedin.com/in",
+    "Czech Republic": "cz.linkedin.com/in",
+    "Hungary": "hu.linkedin.com/in",
+    "Romania": "ro.linkedin.com/in",
+    "Slovakia": "sk.linkedin.com/in",
+    "Ukraine": "ua.linkedin.com/in",
+    "Chile": "cl.linkedin.com/in",
+    "Colombia": "co.linkedin.com/in",
+    "Peru": "pe.linkedin.com/in",
+    "Venezuela": "ve.linkedin.com/in",
+    "Egypt": "eg.linkedin.com/in",
+    "Pakistan": "pk.linkedin.com/in",
+    "Bangladesh": "bd.linkedin.com/in",
+    "Sri Lanka": "lk.linkedin.com/in",
+    "Nigeria": "ng.linkedin.com/in",
+    "Kenya": "ke.linkedin.com/in",
+    "Ghana": "gh.linkedin.com/in",
+    "Morocco": "ma.linkedin.com/in",
+    "Tunisia": "tn.linkedin.com/in",
 }
 
 # Multi-select for countries
@@ -42,7 +93,7 @@ selected_countries = st.multiselect("Select Countries to Search:", list(country_
 
 # Function to fetch LinkedIn profiles
 def fetch_results():
-    if not API_KEY or not CSE_ID or not query or not selected_countries:
+    if not CSE_ID or not query or not selected_countries:
         st.warning("Please fill in all fields before running the search.")
         return None
     
@@ -55,7 +106,7 @@ def fetch_results():
     progress_bar = st.progress(0)
 
     while len(results) < num_results:
-        url = f"https://www.googleapis.com/customsearch/v1?q={query}+({site_query})&key={API_KEY}&cx={CSE_ID}&start={start_index}"
+        url = f"https://www.googleapis.com/customsearch/v1?q={query}+({site_query})&cx={CSE_ID}&start={start_index}"
         response = requests.get(url)
         data = response.json()
 
