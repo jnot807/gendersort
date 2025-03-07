@@ -6,16 +6,17 @@ import streamlit as st
 from datetime import datetime
 from io import StringIO
 
-# Automatically detect the repo directory and add it to Python's path
-repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
-sys.path.append(repo_path)  # Add the repo root to Python's search path
+# Add the current directory to the system path to ensure wiki.py can be found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# Now import wiki.py
+# Import wiki_gendersort from wiki.py
 try:
-    import wiki  # Import the gender sorter script from your GitHub repo
-    gender_sorter = wiki.wiki_gendersort()  # Initialize the gender sorter
-except ModuleNotFoundError:
-    st.error("Error: Could not find `wiki.py`. Make sure it exists in your repo.")
+    from wiki import wiki_gendersort
+    gender_sorter = wiki_gendersort()
+except ModuleNotFoundError as e:
+    st.error(f"ModuleNotFoundError: {e}. Make sure `wiki.py` is in the same directory as this script.")
+except Exception as e:
+    st.error(f"An error occurred while importing wiki.py: {e}")
 
 # Streamlit UI
 st.title("LinkedIn Profile Search (Google CSE)")
@@ -43,7 +44,7 @@ selected_countries = st.multiselect("Select Countries to Search:", list(country_
 def fetch_results():
     if not API_KEY or not CSE_ID or not query or not selected_countries:
         st.warning("Please fill in all fields before running the search.")
-        return
+        return None
     
     linkedin_domains = [country_options[country] for country in selected_countries]
     site_query = " OR ".join([f"site:{domain}" for domain in linkedin_domains])
@@ -79,7 +80,6 @@ def fetch_results():
 
     # Convert results to DataFrame
     df = pd.DataFrame(results, columns=["Title", "Link", "Predicted Gender"])
-
     return df
 
 # Button to start search
