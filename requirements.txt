@@ -1,4 +1,3 @@
 streamlit
 requests
 pandas
-git+https://github.com/jnot807/gendersort.git
