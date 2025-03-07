@@ -6,15 +6,16 @@ import streamlit as st
 from datetime import datetime
 from io import StringIO
 
-# Manually add your GitHub repo path (so we can import wiki.py)
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Automatically detect the repo directory and add it to Python's path
+repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
+sys.path.append(repo_path)  # Add the repo root to Python's search path
 
-# Import `wiki.py` dynamically
+# Now import wiki.py
 try:
-    import wiki
+    import wiki  # Import the gender sorter script from your GitHub repo
     gender_sorter = wiki.wiki_gendersort()  # Initialize the gender sorter
 except ModuleNotFoundError:
-    st.error("Error: Could not find `wiki.py`. Make sure it is in the same directory.")
+    st.error("Error: Could not find `wiki.py`. Make sure it exists in your repo.")
 
 # Streamlit UI
 st.title("LinkedIn Profile Search (Google CSE)")
