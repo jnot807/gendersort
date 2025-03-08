@@ -10,12 +10,20 @@ from io import StringIO
 repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
 sys.path.append(repo_path)  # Add it to Python's search path
 
-# Import Wiki_Gendersort.py dynamically
-try:
-    from Wiki_Gendersort import Wiki_Gendersort
-    gender_sorter = Wiki_Gendersort()  # Initialize the gender sorter
-except ModuleNotFoundError:
-    st.error("Error: Could not find `Wiki_Gendersort.py`. Make sure it exists in your repo and is at the root level.")
+# Debugging: List all files in the repository
+st.write("Current Directory:", os.getcwd())
+st.write("Files in Directory:", os.listdir(repo_path))
+
+# Check if Wiki_Gendersort.py exists before importing
+if "Wiki_Gendersort.py" in os.listdir(repo_path):
+    try:
+        from Wiki_Gendersort import Wiki_Gendersort
+        gender_sorter = Wiki_Gendersort()  # Initialize the gender sorter
+        st.success("✅ Successfully imported Wiki_Gendersort")
+    except Exception as e:
+        st.error(f"⚠️ Import failed: {e}")
+else:
+    st.error("❌ ERROR: Could not find Wiki_Gendersort.py. Make sure it exists in your repo and is at the root level.")
 
 # Streamlit UI
 st.title("🔎 LinkedIn Profile Search (Google CSE)")
