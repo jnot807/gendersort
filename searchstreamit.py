@@ -17,8 +17,8 @@ st.write("Files in Directory:", os.listdir(repo_path))
 # Check if Wiki_Gendersort.py exists before importing
 if "Wiki_Gendersort.py" in os.listdir(repo_path):
     try:
-        from Wiki_Gendersort import Wiki_Gendersort
-        gender_sorter = Wiki_Gendersort()  # Initialize the gender sorter
+        from Wiki_Gendersort import wiki_gendersort  # Correct import
+        gender_sorter = wiki_gendersort()  # Initialize the gender sorter
         st.success("✅ Successfully imported Wiki_Gendersort")
     except Exception as e:
         st.error(f"⚠️ Import failed: {e}")
