@@ -4,3 +4,4 @@ pandas
 wikipedia
 unidecode
 tqdm
+pathlib
