@@ -54,42 +54,17 @@ country_options = {
     "New Zealand": "nz.linkedin.com/in",
     "United Arab Emirates": "ae.linkedin.com/in",
     "Saudi Arabia": "sa.linkedin.com/in",
-    "Norway": "no.linkedin.com/in",
-    "Denmark": "dk.linkedin.com/in",
-    "Finland": "fi.linkedin.com/in",
-    "Poland": "pl.linkedin.com/in",
-    "Turkey": "tr.linkedin.com/in",
-    "Malaysia": "my.linkedin.com/in",
-    "Indonesia": "id.linkedin.com/in",
-    "Philippines": "ph.linkedin.com/in",
-    "Thailand": "th.linkedin.com/in",
-    "South Korea": "kr.linkedin.com/in",
-    "Vietnam": "vn.linkedin.com/in",
-    "Israel": "il.linkedin.com/in",
-    "Portugal": "pt.linkedin.com/in",
-    "Greece": "gr.linkedin.com/in",
-    "Czech Republic": "cz.linkedin.com/in",
-    "Hungary": "hu.linkedin.com/in",
-    "Romania": "ro.linkedin.com/in",
-    "Slovakia": "sk.linkedin.com/in",
-    "Ukraine": "ua.linkedin.com/in",
-    "Chile": "cl.linkedin.com/in",
-    "Colombia": "co.linkedin.com/in",
-    "Peru": "pe.linkedin.com/in",
-    "Venezuela": "ve.linkedin.com/in",
-    "Egypt": "eg.linkedin.com/in",
-    "Pakistan": "pk.linkedin.com/in",
-    "Bangladesh": "bd.linkedin.com/in",
-    "Sri Lanka": "lk.linkedin.com/in",
-    "Nigeria": "ng.linkedin.com/in",
-    "Kenya": "ke.linkedin.com/in",
-    "Ghana": "gh.linkedin.com/in",
-    "Morocco": "ma.linkedin.com/in",
-    "Tunisia": "tn.linkedin.com/in",
 }
 
 # Multi-select for countries
 selected_countries = st.multiselect("Select Countries to Search:", list(country_options.keys()))
+
+# Construct the hidden country-specific site query
+if selected_countries:
+    site_query = " OR ".join([f"site:{country_options[country]}" for country in selected_countries])
+    full_query = f"({site_query}) {query}"
+else:
+    full_query = query
 
 # Function to fetch LinkedIn profiles
 def fetch_results():
@@ -97,16 +72,13 @@ def fetch_results():
         st.warning("Please fill in all fields before running the search.")
         return None
     
-    linkedin_domains = [country_options[country] for country in selected_countries]
-    site_query = " OR ".join([f"site:{domain}" for domain in linkedin_domains])
-
     results = []
     start_index = 1
     batch_size = 10
     progress_bar = st.progress(0)
 
     while len(results) < num_results:
-        url = f"https://www.googleapis.com/customsearch/v1?q={query}+({site_query})&cx={CSE_ID}&start={start_index}"
+        url = f"https://www.googleapis.com/customsearch/v1?q={full_query}&cx={CSE_ID}&start={start_index}"
         response = requests.get(url)
         data = response.json()
 
