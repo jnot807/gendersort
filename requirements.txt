@@ -3,3 +3,4 @@ requests
 pandas
 wikipedia
 unidecode
+tqdm
