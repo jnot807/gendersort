@@ -6,16 +6,16 @@ import streamlit as st
 from datetime import datetime
 from io import StringIO
 
-# Ensure the script finds wiki.py in the same repo
+# Ensure the script finds Wiki_Gendersort.py in the same repo
 repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
 sys.path.append(repo_path)  # Add it to Python's search path
 
-# Import wiki.py dynamically
+# Import Wiki_Gendersort.py dynamically
 try:
-    from wiki import wiki_gendersort
+    from Wiki_Gendersort import wiki_gendersort
     gender_sorter = wiki_gendersort()  # Initialize the gender sorter
 except ModuleNotFoundError:
-    st.error("Error: Could not find `wiki.py`. Make sure it exists in your repo and is at the root level.")
+    st.error("Error: Could not find `Wiki_Gendersort.py`. Make sure it exists in your repo and is at the root level.")
 
 # Streamlit UI
 st.title("🔎 LinkedIn Profile Search (Google CSE)")
