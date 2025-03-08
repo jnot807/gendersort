@@ -12,8 +12,8 @@ sys.path.append(repo_path)  # Add it to Python's search path
 
 # Import Wiki_Gendersort.py dynamically
 try:
-    from Wiki_Gendersort import wiki_gendersort
-    gender_sorter = wiki_gendersort()  # Initialize the gender sorter
+    from Wiki_Gendersort import Wiki_Gendersort
+    gender_sorter = Wiki_Gendersort()  # Initialize the gender sorter
 except ModuleNotFoundError:
     st.error("Error: Could not find `Wiki_Gendersort.py`. Make sure it exists in your repo and is at the root level.")
 
