@@ -5,3 +5,5 @@ wikipedia
 unidecode
 tqdm
 pathlib
+wikipedia-api
+
