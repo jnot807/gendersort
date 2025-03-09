@@ -30,8 +30,8 @@ if "Wiki_Gendersort.py" in os.listdir(repo_path):
 else:
     print("❌ ERROR: Could not find Wiki_Gendersort.py. Make sure it exists in your repo and is at the root level.")
 
-# Google CSE API Credentials
-API_KEY = input("Enter Google CSE API Key: ")
+# Hardcoded Google CSE API Key
+API_KEY = "AIzaSyBuskvy0h2pfBTyMsqmsb659duKYq2sCP8"
 
 # Display a message when the script is run
 print("\nScript is running as scheduled. Please provide the necessary inputs below.\n")
@@ -62,18 +62,26 @@ start_index = 1  # Start index for Google API pagination
 batch_size = 10  # Number of results fetched per API call
 
 # Construct Google-friendly query
-site_query = '"site:www.linkedin.com/in" OR "site:uk.linkedin.com/in" OR "site:ca.linkedin.com/in"'
-full_query = f"{site_query} \"{query}\""
+site_query = ' OR '.join([f'"site:{domain}"' for domain in [
+    "www.linkedin.com/in", "uk.linkedin.com/in", "ca.linkedin.com/in"
+]])
+full_query = f"({site_query}) \"{query}\""
 
 print(f"🔍 Final Google Search Query: {full_query}")  # Debugging
+print(f"🔑 Using API Key: {API_KEY}")
+print(f"🌐 Using CSE ID: {CSE_ID}")
 
 while len(results) < num_results:
     url = f"https://www.googleapis.com/customsearch/v1?q={full_query}&key={API_KEY}&cx={CSE_ID}&start={start_index}"
     response = requests.get(url)
     data = response.json()
 
+    # Debug: Print API Response
+    print(f"📢 API Request: {url}")
+    print(f"🔍 API Response: {data}")  # Print entire response
+
     if 'items' not in data:
-        print("No more results available.")
+        print("⚠️ No results found. Check if your query is formatted correctly.")
         break  # Stop if no more results are available
 
     for item in data['items']:
