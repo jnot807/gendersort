@@ -2,7 +2,14 @@ import os
 import sys
 import requests
 import pandas as pd
+import streamlit as st  # Required for Streamlit app
 from datetime import datetime
+from io import StringIO
+import wikipediaapi  # Correct import for `wikipedia-api`
+import wikipedia  # Standard Wikipedia module (ensure it's installed)
+from unidecode import unidecode  # Required for Unicode handling
+from tqdm import tqdm  # For progress bars
+from pathlib import Path  # For file handling
 
 # Ensure the script finds Wiki_Gendersort.py in the same repo
 repo_path = os.path.dirname(os.path.abspath(__file__))  # Get the script's directory
