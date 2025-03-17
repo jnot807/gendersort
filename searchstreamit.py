@@ -21,7 +21,7 @@ gender_sorter = wiki_gendersort()
 
 # Streamlit UI
 st.title("Gender Filtered Google Custom Search Results")
-
+st.write("(Remember: Google CSE has a limit of 1000 results per day)")
 # User Inputs
 API_KEY = st.text_input("Enter your Google API Key:", type="password")  # API key input field
 CSE_ID = st.text_input("Enter the Custom Search Engine ID (CSE ID):")
