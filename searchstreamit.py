@@ -17,16 +17,16 @@ gender_sorter = wiki_gendersort()
 
 # Streamlit UI
 st.title("Gender Filtered Google Custom Search Results")
-st.write("(Remember: Google CSE has a limit of 1000 results per day)")
+st.write("(Remember: Google CSE has a limit of 1000 results per day — 1 search is 1 profile scanned)")
 
 # User Inputs
 API_KEY = st.text_input("Enter your Google API Key:", type="password")
 CSE_ID = st.text_input("Enter the Custom Search Engine ID (CSE ID):")
 query = st.text_input("Enter the search query:")
-num_results = st.number_input("Enter the number of results to fetch:", min_value=1, max_value=100, value=10)
+num_results = st.number_input("Enter the number of profiles you want to search:", min_value=1, max_value=100, value=10)
 
 gender_filter = st.selectbox("Select Gender to Filter By:", ("male", "female", "both"))
-additional_genders = st.selectbox("Include Additional Genders:", ("none", "unknown", "unisex", "both"))
+additional_genders = st.selectbox("Do you also want to filter unknown or unisex names?:", ("none", "unknown", "unisex", "both"))
 
 # Fetch Google CSE Results when the button is pressed
 if st.button("Fetch and Filter Results"):
