@@ -26,7 +26,7 @@ query = st.text_input("Enter the search query:")
 num_results = st.number_input("Enter the number of profiles you want to search:", min_value=1, max_value=100, value=10)
 
 gender_filter = st.selectbox("Select Gender to Filter By:", ("male", "female", "both"))
-additional_genders = st.selectbox("Do you also want to filter unknown or unisex names?:", ("none", "unknown", "unisex", "both"))
+additional_genders = st.selectbox("Do you also want to include unknown or unisex names?:", ("no thanks", "unknown", "unisex", "both"))
 
 # Fetch Google CSE Results when the button is pressed
 if st.button("Fetch and Filter Results"):
